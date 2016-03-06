@@ -1,0 +1,41 @@
+security:
+    acl:
+        connection: default
+    encoders:
+        Application\Sonata\UserBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 15
+    role_hierarchy:
+        ROLE_USER: [ROLE_GUEST]
+        ROLE_ADMIN: [ROLE_USER, ROLE_SONATA_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        SONATA:
+    providers:
+        fos_userbundle:
+            id: fos_user.user_manager
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        admin:
+            pattern:            /admin(.*)
+            context:            admin
+            form_login:
+                provider:       fos_userbundle
+                login_path:     /admin/login
+                use_forward:    false
+                check_path:     /admin/login_check
+                failure_path:   null
+                remember_me: true
+            logout:
+                path:           /admin/logout
+                target:         /admin
+                invalidate_session: false
+            anonymous:          true
+    access_control:
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN] }
+        - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }

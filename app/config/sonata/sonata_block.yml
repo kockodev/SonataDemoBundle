@@ -1,0 +1,9 @@
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+        sonata.admin.block.search_result: # blok vyhledávání
+        sonata.user.block.menu: # blok menu
+        sonata.user.block.account: # blok uživatelského účtu
+        sonata.block.service.text: # block jednoduchého textu

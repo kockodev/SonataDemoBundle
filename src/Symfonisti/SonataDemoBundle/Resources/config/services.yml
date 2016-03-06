@@ -1,0 +1,6 @@
+services:
+    symfonisti_sonata_demo.admin.note:
+        class: Symfonisti\SonataDemoBundle\Admin\NoteAdmin
+        arguments: [~, Symfonisti\SonataDemoBundle\Entity\Note, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Note }

@@ -1,0 +1,6 @@
+sonata_core: ~
+
+doctrine:
+    dbal:
+        types:
+            json: Sonata\Doctrine\Types\JsonType

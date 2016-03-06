@@ -1,0 +1,3 @@
+symfonisti_sonata_demo_homepage:
+    path:     /
+    defaults: { _controller: SymfonistiSonataDemoBundle:Default:index }
