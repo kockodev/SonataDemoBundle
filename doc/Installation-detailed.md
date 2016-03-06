@@ -265,21 +265,6 @@ Do souboru `app/config/sonata/sonata_admin.yml` vložíme konfiguraci:
 
 Podrobnější konfigurace budeme probírat v dalších dílech série. Samozřejmě můžete prozkoumat [oficiální dokumentaci](https://sonata-project.org/bundles/admin/master/doc/reference/configuration.html).
 
-Dále nainstalujeme knihovny, které jsou potřebné pro fungování administrace. K tomu je skvělý [bower](http://bower.io/#install-bower). Instalaci spustíme příkazem:
-
-    bower install ./vendor/sonata-project/admin-bundle/bower.json
-
-Nyní máme k dispozici JavaScriptové balíčky:
-
-- iCheck
-- jquery-form
-- jquery.scrollTo
-- jqueryui
-- slimScroll
-- waypoints
-- x-editable
-- admin-lte
-
 Do souboru `app/config/sonata/sonata_block.yml` vložíme:
 
     sonata_block:
