@@ -2,7 +2,7 @@
 
 ### 1. Instalace Symfony 2.8
 
-Verzi Symfony 2.8 používám proto, že SonataUserBundle ještě neumí pracovat s verzí Symfony 3.0. Až to bude umět, sepíši pro Vás nové konfigurace.
+Verzi Symfony 2.8 používám proto, že SonataUserBundle ještě neumí pracovat s verzí Symfony 3.0. Jako poslední krok konfigurací si ukážeme, jak přenastavit verzi 2.8 do struktur 3.0, ať jsme na to ihned připraveni.
 
 Z [dokumentace Symfony](http://symfony.com/download) využijeme zabudovaný instalátor:
 
@@ -23,7 +23,7 @@ Pokud nechceme (nebo nemůžeme) použít Symfony instalátor, máme k dispozici
 
     composer create-project symfony/framework-standard-edition sonata "2.8.*"
 
-Ve složce `sonata` máme nyní k dispozici plně vybavený Symfony framework-standard-edition verze 2.8. Tuto verzi volím, protože Sonata ještě není plně připravena pro Symfony 3.0.
+Ve složce `sonata` máme nyní k dispozici plně vybavený Symfony framework-standard-edition verze 2.8 (na konci upravíme adresářovou strukturu do verze 3.0).
 
 Nyní odstraníme demo `AppBundle` ze složky `src/AppBundle` (smažeme celou složku AppBundle). Otevřeme `app/config/routing.yml` a celý soubor vyprázdníme.
 
@@ -570,3 +570,119 @@ Případně si nakonfigurujte (například v Apachi) vlastní VirtualHost a proh
 Přihlásit se můžete pomocí účtu, který jsme vytvořili příkazem `fos:user:create`. Pokud vidíte následující obrazovku, vše jste provedli správně:
 
 ![Administrace](img/01_sonata_dashboard.png)
+
+### 6. Úprava Symfony 2.8 do struktury Symfony 3.0
+
+Na závěr si ukážeme, jak náš projekt správně přenastavit do struktury Symfony 3.0 a budeme tak připraveni na změny.
+
+##### A) Upravíme `composer.json` následovně:
+
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "files": ["app/AppKernel.php"],
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\": "tests/" }
+    },
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web",
+        "symfony-var-dir": "var",
+        "symfony-bin-dir": "bin",
+        "symfony-tests-dir": "tests",
+    },
+
+
+##### B) Upravíme `app/AppKernel.php`
+
+Přidáme nové metody:
+
+    /**
+     * @return string
+     */
+    public function getRootDir()
+    {
+        return __DIR__;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCacheDir()
+    {
+        return dirname(__DIR__).'/var/cache/'.$this->environment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogDir()
+    {
+        return dirname(__DIR__).'/var/logs';
+    }
+
+##### C) Další jednodušší zásahy
+
+Vytvoříme složku `var`
+    
+    mkdir var
+
+Přemístíme do ni `app/cache/*`
+
+    git mv app/cache var/
+
+Přemístíme do ni `app/logs/*`
+    
+    git mv app/logs var/
+
+Vytvoříme složku `bin`
+
+    mkdir bin
+
+Přemístíme do ni `app/console`:
+
+    git mv app/console bin/console
+
+Upravíme soubor `bin/console`
+
+    require __DIR__.'/../app/autoload.php';
+
+Upavíme soubor `web/app.php`:
+
+    $loader = require __DIR__.'/../app/autoload.php';
+    include_once __DIR__.'/../var/bootstrap.php.cache';
+
+Přemístíme konfigurace phpunit:
+
+    git mv app/phpunit.xml.dist .
+
+Upravíme soubor `phpunit.xml.dist`:
+    
+    // řádek:
+    bootstrap="autoload.php"
+    // nahradíme za:
+    bootstrap="app/autoload.php"
+
+    // upravíme následující:
+    <php>
+        <server name="KERNEL_DIR" value="app/" />
+    </php>
+
+Upravíme soubor `app/config/config.yml`:
+
+    framework:
+        assets: ~
+
+A nakonec spustíme 
+
+    composer install
+
+#### Nyní máme k dispozici stejnou adresářovou strukturu aplikace jako Symfony verze 3.0
+
+Návod viz [https://knpuniversity.com/screencast/symfony3-upgrade/new-dir-structure](https://knpuniversity.com/screencast/symfony3-upgrade/new-dir-structure)
