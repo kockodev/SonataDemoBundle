@@ -55,6 +55,6 @@ Při vyplňování hesla dávejte pozor, bude viditelné na obrazovce terminálu
 
 Následně máme k dispozici URL adresu [localhost:8000/admin](http://localhost:8000/admin), kde si můžeme zobrazit administraci a přihlásit se pomocí uživatele vytvořeného v kroku 6.
 
-Touto adresou prohlížíme tzv. `prod` prostředí Symfony aplikace. Chceme-li si zobrazit `dev` prostředí (kde najdete užitečný profiler), použijeme adresu [localhost:8000/app_dev.php/admin](http://localhost:8000/app_dev.php/admin). Více o Symfony prostředí se dočtete v [oficiální dokumentaci](http://symfony.com/doc/current/cookbook/configuration/environments.html#different-environments-different-configuration-files).
+Defaultně Symfony spouští všechny příkazy v `dev` prostředí. Chceme-li zkoušet produkční mód, musíme server spustit pomocí příkazu `php app/console server:run -e prod`, což není doporučeno provádět jinde než na localhostu.
 
 ### Příjemnou zábavu se Sonatou

@@ -549,13 +549,11 @@ Vytvoření administrátorského účtu (spuštění průvodce vytvoření admin
 
     php app/console fos:user:create --super-admin
 
-Závěrečné čištění produkční cache:
+Závěrečné čištění cache:
 
-    php app/console cache:clear -e prod
-    
-Odstraníme dev cache:
+    php app/console cache:clear -e dev
 
-    php app/console cache:clear -e dev --no-warmup
+(parameter `-e dev` znamená, že chceme příkaz spustit pro prostředí `dev`. V jakémkoli Commandu můžeme použít prostředí `prod` = pro produkci)
 
 Pokud nemáme k dispozici Apache nebo jiný lokální server, můžeme využít zabudovaný Symfony server:
 
@@ -563,12 +561,11 @@ Pokud nemáme k dispozici Apache nebo jiný lokální server, můžeme využít 
 
 ### 5. Připraveno pro vývoj
 
-Nyní můžeme aplikaci spustit. K dispozici máme dvě dvě přostředí - dev a prod. Z názvu je patrné, že dev = develop a prod = produkce.
+Nyní můžeme aplikaci spustit. Symfony příkazy defaultně spouští v prostředí `dev` (=develop), kde máme dostupný profiler.
 
 - [localhost:8000/admin](http://localhost:8000/admin)
-- [localhost:8000/app_dev.php/admin](http://localhost:8000/app_dev.php/admin)
 
-Případně si nakonfigurujte například v Apachi vlastní VirtualHost a prohlížejte na Vámi zvolené adrese.
+Případně si nakonfigurujte (například v Apachi) vlastní VirtualHost a prohlížejte na Vámi zvolené adrese. Budete-li konfigurovat Apache, nezapomeňte prohlížet `dev` verzi pomocí URL adresy [localhost/app_dev.php/admin](http://localhost/app_dev.php/admin)
 
 Přihlásit se můžete pomocí účtu, který jsme vytvořili příkazem `fos:user:create`. Pokud vidíte následující obrazovku, vše jste provedli správně:
 
